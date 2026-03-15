@@ -39,9 +39,6 @@ export default function MTGNMode() {
       {/* Title */}
       <div className="text-center">
         <h2 className="text-4xl font-bold text-yellow-400 mb-2">🪳 MTGN Mode</h2>
-        <p className="text-roach-300">
-          Roll your roach and race against AI opponents. No tokens required!
-        </p>
       </div>
 
       {/* Stats Grid */}
@@ -118,7 +115,7 @@ export default function MTGNMode() {
                 onClick={handleNewRoach}
                 className="px-6 py-3 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg font-bold transition-all"
               >
-                🎲 Roll Roach
+                🔄 Reroll Roach
               </button>
             </div>
           )}
@@ -189,7 +186,7 @@ export default function MTGNMode() {
             </div>
           ) : (
             <div className="text-center py-8 text-roach-300">
-              <p>Roll a roach and start a race to see results here</p>
+              <p>Start a race to see results here</p>
             </div>
           )}
         </div>
@@ -198,7 +195,7 @@ export default function MTGNMode() {
       {/* Stats Summary */}
       <div className="bg-roach-800 rounded-xl p-6 border border-roach-700">
         <h3 className="text-xl font-bold text-yellow-400 mb-4">Session Stats</h3>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-4 gap-4">
           <div className="bg-roach-700 rounded-lg p-4 text-center">
             <p className="text-roach-300 text-sm">Total Races</p>
             <p className="text-3xl font-bold text-blue-400">{raceCount}</p>
@@ -211,6 +208,12 @@ export default function MTGNMode() {
             <p className="text-roach-300 text-sm">Avg Payout</p>
             <p className="text-3xl font-bold text-yellow-400">
               {raceCount > 0 ? (totalWinnings / raceCount).toFixed(1) : "0"}
+            </p>
+          </div>
+          <div className="bg-roach-700 rounded-lg p-4 text-center">
+            <p className="text-roach-300 text-sm">Win Rate</p>
+            <p className="text-3xl font-bold text-purple-400">
+              {raceCount > 0 ? ((totalWinnings / raceCount / 10) * 100).toFixed(0) : "0"}%
             </p>
           </div>
         </div>
