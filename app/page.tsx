@@ -26,23 +26,22 @@ export default function Home() {
 
       {/* Game Mode Selector */}
       <div className="max-w-6xl mx-auto mb-8">
-        <div className="flex gap-3 flex-wrap justify-center">
+        <div className="flex gap-4 flex-wrap justify-center">
           {[
-            { id: "mtgn", label: "🪳 MTGN Mode", desc: "Off-chain racing" },
-            { id: "trax", label: "💰 TRAX Mode", desc: "Play with tokens" },
-            { id: "arcade", label: "🎮 Arcade Mode", desc: "Coming soon" },
+            { id: "mtgn", label: "🪳 MTGN Mode" },
+            { id: "trax", label: "💰 TRAX Mode" },
+            { id: "arcade", label: "🎮 Arcade Mode" },
           ].map((mode) => (
             <button
               key={mode.id}
               onClick={() => setGameMode(mode.id as GameMode)}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+              className={`px-8 py-4 rounded-xl font-bold transition-all transform duration-200 ${
                 gameMode === mode.id
-                  ? "bg-yellow-600 text-white shadow-lg scale-105"
-                  : "bg-roach-700 text-roach-50 hover:bg-roach-600"
+                  ? "bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-xl shadow-yellow-500/50 scale-105 hover:scale-110"
+                  : "bg-gradient-to-br from-roach-700 to-roach-800 text-roach-50 hover:from-roach-600 hover:to-roach-700 hover:shadow-lg hover:scale-102"
               }`}
             >
-              <div>{mode.label}</div>
-              <div className="text-xs opacity-75">{mode.desc}</div>
+              {mode.label}
             </button>
           ))}
         </div>

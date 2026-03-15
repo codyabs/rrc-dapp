@@ -26,14 +26,14 @@ export default function Shop({ traxBalance, onClose, onPurchase }: ShopProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-      <div className="bg-roach-800 rounded-xl max-w-4xl w-full max-h-screen overflow-y-auto border border-roach-700 shadow-2xl">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-gradient-to-br from-roach-800 via-roach-850 to-roach-900 rounded-xl max-w-4xl w-full max-h-screen overflow-y-auto border border-yellow-600/30 shadow-2xl shadow-yellow-600/20">
         {/* Header */}
-        <div className="sticky top-0 bg-roach-900 px-6 py-4 border-b border-roach-700 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-yellow-400">🛍️ Shop</h2>
+        <div className="sticky top-0 bg-gradient-to-r from-roach-900 to-roach-800 px-6 py-4 border-b border-yellow-600/20 flex justify-between items-center">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent">🛍️ Shop</h2>
           <button
             onClick={onClose}
-            className="text-roach-300 hover:text-white text-2xl font-bold"
+            className="text-roach-300 hover:text-yellow-400 hover:scale-110 text-2xl font-bold transition-all"
           >
             ✕
           </button>
@@ -42,13 +42,13 @@ export default function Shop({ traxBalance, onClose, onPurchase }: ShopProps) {
         {/* Content */}
         <div className="p-6">
           {/* Balance Display */}
-          <div className="mb-6 bg-roach-700 rounded-lg p-4 text-center">
+          <div className="mb-6 bg-gradient-to-r from-green-700/30 to-green-800/20 rounded-lg p-4 text-center border border-green-600/30 shadow-lg shadow-green-500/20">
             <p className="text-roach-300 text-sm">Your $TRAX Balance</p>
-            <p className="text-3xl font-bold text-green-400">{traxBalance.toFixed(0)}</p>
+            <p className="text-4xl font-bold text-green-400">{traxBalance.toFixed(0)}</p>
           </div>
 
           {/* Category Filters */}
-          <div className="mb-6 flex gap-2 flex-wrap">
+          <div className="mb-6 flex gap-3 flex-wrap">
             {[
               { id: "all", label: "All Items" },
               { id: "boost", label: "⚡ Boosts" },
@@ -58,10 +58,10 @@ export default function Shop({ traxBalance, onClose, onPurchase }: ShopProps) {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id as any)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                className={`px-5 py-2 rounded-lg font-semibold transition-all transform ${
                   selectedCategory === cat.id
-                    ? "bg-yellow-600 text-white"
-                    : "bg-roach-700 text-roach-300 hover:bg-roach-600"
+                    ? "bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-lg shadow-yellow-500/50 scale-105"
+                    : "bg-gradient-to-r from-roach-700 to-roach-750 text-roach-300 hover:from-roach-600 hover:to-roach-700 hover:text-roach-100"
                 }`}
               >
                 {cat.label}
@@ -76,43 +76,43 @@ export default function Shop({ traxBalance, onClose, onPurchase }: ShopProps) {
               return (
                 <div
                   key={item.id}
-                  className={`rounded-lg border p-4 transition-all ${
+                  className={`rounded-xl border p-4 transition-all transform duration-200 ${
                     canAfford
-                      ? "bg-roach-700 border-roach-600 hover:border-yellow-400"
-                      : "bg-roach-800 border-roach-700 opacity-60"
+                      ? "bg-gradient-to-br from-roach-700 to-roach-800 border-yellow-600/30 hover:border-yellow-400 hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 cursor-pointer"
+                      : "bg-gradient-to-br from-roach-800 to-roach-900 border-roach-700 opacity-50"
                   }`}
                 >
                   {/* Item Info */}
-                  <h3 className="font-bold text-roach-50 mb-1">{item.name}</h3>
-                  <p className="text-xs text-roach-300 mb-3 capitalize">{item.category}</p>
+                  <h3 className="font-bold text-roach-50 mb-1 text-lg">{item.name}</h3>
+                  <p className="text-xs text-yellow-600/80 mb-3 capitalize font-semibold">{item.category}</p>
 
                   {/* Effect Display */}
                   {item.effect && (
-                    <div className="text-xs text-roach-300 mb-3 space-y-1">
+                    <div className="text-sm text-roach-200 mb-4 space-y-2 bg-roach-900/40 rounded p-3">
                       {item.effect.speed && (
-                        <p>⚡ Speed +{item.effect.speed}</p>
+                        <p className="text-red-400">⚡ Speed +{item.effect.speed}</p>
                       )}
                       {item.effect.agility && (
-                        <p>🏃 Agility +{item.effect.agility}</p>
+                        <p className="text-orange-400">🤸 Agility +{item.effect.agility}</p>
                       )}
                       {item.effect.stamina && (
-                        <p>💪 Stamina +{item.effect.stamina}</p>
+                        <p className="text-green-400">💪 Stamina +{item.effect.stamina}</p>
                       )}
                     </div>
                   )}
 
                   {/* Price and Button */}
                   <div className="flex items-center justify-between pt-3 border-t border-roach-600">
-                    <span className="font-bold text-green-400">
+                    <span className="font-bold text-green-400 text-lg">
                       {item.price} $TRAX
                     </span>
                     <button
                       onClick={() => handlePurchase(item.id, item.price)}
                       disabled={!canAfford}
-                      className={`px-3 py-1 rounded-lg text-sm font-semibold transition-all ${
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all transform ${
                         canAfford
-                          ? "bg-green-600 hover:bg-green-500 text-white"
-                          : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                          ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-green-500/50"
+                          : "bg-gray-700 text-gray-400 cursor-not-allowed"
                       }`}
                     >
                       {canAfford ? "Buy" : "Locked"}
