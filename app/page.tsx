@@ -16,7 +16,7 @@ export default function Home() {
   const [usdcBalance] = useState<number>(0);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-roach-900 via-roach-800 to-roach-900 p-4 md:p-8">
+    <main className="min-h-screen p-4 md:p-8">
       <Header
         gameMode={gameMode}
         traxBalance={traxBalance}
