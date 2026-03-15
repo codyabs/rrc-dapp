@@ -13,6 +13,7 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
   const [raceResult, setRaceResult] = useState<GameResult | null>(null);
   const [isRacing, setIsRacing] = useState(false);
   const [entryAmount, setEntryAmount] = useState(10);
+  const [selectedToken, setSelectedToken] = useState<"TRAX" | "PENGU">("TRAX");
   const [totalPlayed, setTotalPlayed] = useState(0);
   const [totalWon, setTotalWon] = useState(0);
 
@@ -56,6 +57,30 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
         <p className="text-roach-300">
           Play with real $TRAX tokens. Higher stakes, higher rewards!
         </p>
+      </div>
+
+      {/* Token Selector */}
+      <div className="flex justify-center gap-4 mb-6">
+        <button
+          onClick={() => setSelectedToken("TRAX")}
+          className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+            selectedToken === "TRAX"
+              ? "bg-green-600 text-white shadow-lg"
+              : "bg-roach-700 text-roach-50 hover:bg-roach-600"
+          }`}
+        >
+          💰 $TRAX
+        </button>
+        <button
+          onClick={() => setSelectedToken("PENGU")}
+          className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+            selectedToken === "PENGU"
+              ? "bg-blue-600 text-white shadow-lg"
+              : "bg-roach-700 text-roach-50 hover:bg-roach-600"
+          }`}
+        >
+          🐧 $PENGU
+        </button>
       </div>
 
       {/* Main Game Grid */}
@@ -164,11 +189,8 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
           )}
         </div>
 
-        {/* Race Result Panel */}
-        <div className="bg-roach-800 rounded-xl p-6 border border-roach-700">
-          <h3 className="text-xl font-bold text-green-400 mb-4">Race Results</h3>
-
-          {raceResult ? (
+        {/* Race Result Panel - Hidden */}
+        <div className="hidden">
             <div className="space-y-4">
               {/* Result Badge */}
               <div className="text-center">

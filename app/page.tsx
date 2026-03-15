@@ -13,7 +13,7 @@ export default function Home() {
   const [gameMode, setGameMode] = useState<GameMode>("mtgn");
   const [showShop, setShowShop] = useState(false);
   const [traxBalance, setTraxBalance] = useState<number>(100); // Initial mock balance
-  const [usdcBalance] = useState<number>(0);
+  const [usdcBalance] = useState<number>(500);
 
   return (
     <main className="min-h-screen p-4 md:p-8">
@@ -28,7 +28,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex gap-3 flex-wrap justify-center">
           {[
-            { id: "mtgn", label: "🪳 MTGN Mode", desc: "Off-chain racing" },
+            { id: "mtgn", label: "🔥 MTGN Mode", desc: "" },
             { id: "trax", label: "💰 TRAX Mode", desc: "Play with tokens" },
             { id: "arcade", label: "🎮 Arcade Mode", desc: "Coming soon" },
           ].map((mode) => (
@@ -42,7 +42,7 @@ export default function Home() {
               }`}
             >
               <div>{mode.label}</div>
-              <div className="text-xs opacity-75">{mode.desc}</div>
+              {mode.desc && <div className="text-xs opacity-75">{mode.desc}</div>}
             </button>
           ))}
         </div>
