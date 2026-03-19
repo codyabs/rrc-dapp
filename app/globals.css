@@ -13,20 +13,20 @@ body {
   width: 100%;
   min-height: 100vh;
   background: 
-    linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(30, 25, 20, 0.7) 50%, rgba(0, 0, 0, 0.7) 100%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(15, 23, 42, 0.9) 100%),
     url('/roach-racing-club-S8nm1FKMad2p.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: #f0ebe4;
+  color: #e2e8f0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
 }
 
 html {
   background: 
-    linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(30, 25, 20, 0.7) 50%, rgba(0, 0, 0, 0.7) 100%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(15, 23, 42, 0.9) 100%),
     url('/roach-racing-club-S8nm1FKMad2p.jpg');
   background-size: cover;
   background-position: center;
@@ -38,22 +38,22 @@ body {
   overflow-x: hidden;
 }
 
-/* Roach Racing themed scrollbar */
+/* Abstract Professional themed scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #3f3530;
+  background: #1e293b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7d6d5c;
+  background: #475569;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9d8672;
+  background: #64748b;
 }
 
 /* Smooth transitions */

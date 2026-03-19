@@ -75,7 +75,7 @@ export default function MTGNMode() {
     <div className="space-y-6">
       {/* Title */}
       <div className="text-center">
-        <h2 className="text-4xl font-bold text-yellow-400 mb-2">🪳 MTGN Mode</h2>
+        <h2 className="text-4xl font-bold text-yellow-400 mb-2">🔥 MTGN Mode</h2>
       </div>
 
       {/* Stats Grid */}
