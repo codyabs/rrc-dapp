@@ -1,22 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MTGNMode from "./components/MTGNMode";
 import TRAXMode from "./components/TRAXMode";
 import ArcadeMode from "./components/ArcadeMode";
 import Header from "./components/Header";
 import Shop from "./components/Shop";
+import { OnboardingModal } from "./components/OnboardingModal";
 
 type GameMode = "mtgn" | "trax" | "arcade";
 
 export default function Home() {
   const [gameMode, setGameMode] = useState<GameMode>("mtgn");
   const [showShop, setShowShop] = useState(false);
-  const [traxBalance, setTraxBalance] = useState<number>(100); // Initial mock balance
+  const [traxBalance, setTraxBalance] = useState<number>(100);
   const [usdcBalance] = useState<number>(500);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Handle onboarding on first visit
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hasSeenOnboarding = localStorage.getItem("rrc_onboarding_seen");
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+        localStorage.setItem("rrc_onboarding_seen", "true");
+      }
+    }
+  }, []);
+
+  const handleOnboardingClose = () => {
+    setShowOnboarding(false);
+  };
 
   return (
     <main className="min-h-screen p-4 md:p-8">
+      {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
+
       <Header
         gameMode={gameMode}
         traxBalance={traxBalance}

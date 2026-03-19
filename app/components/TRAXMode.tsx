@@ -1,7 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { rollRoach, simulateRace, type RoachStats, type GameResult } from "@/app/lib/gameLogic";
+import { recordRaceResult, loadStats, type PlayerStats } from "@/app/lib/statsManager";
+
+const DEFAULT_STATS: PlayerStats = {
+  totalRaces: 0,
+  totalWins: 0,
+  totalLosses: 0,
+  winRate: 0,
+  favoriteRoachSpeed: 5,
+  favoriteRoachAgility: 5,
+  favoriteRoachStamina: 5,
+  totalEarnings: 0,
+  lastRaceTime: 0,
+  itemsPurchased: 0,
+};
 
 type TRAXModeProps = {
   traxBalance: number;
@@ -16,6 +30,13 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
   const [selectedToken, setSelectedToken] = useState<"TRAX" | "PENGU">("TRAX");
   const [totalPlayed, setTotalPlayed] = useState(0);
   const [totalWon, setTotalWon] = useState(0);
+  const [stats, setStats] = useState<PlayerStats>(DEFAULT_STATS);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setStats(loadStats());
+    }
+  }, []);
 
   const handleNewRoach = () => {
     const newStats = rollRoach();
@@ -39,6 +60,20 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
 
     const result = simulateRace(roachStats);
     setRaceResult(result);
+
+    // Track the race in stats
+    const normalizedSpeed = Math.round((result.stats.speed / 100) * 10);
+    const normalizedAgility = Math.round((result.stats.agility / 100) * 10);
+    const normalizedStamina = Math.round((result.stats.stamina / 100) * 10);
+    
+    const updatedStats = recordRaceResult(
+      result.position,
+      result.winnings,
+      normalizedSpeed,
+      normalizedAgility,
+      normalizedStamina
+    );
+    setStats(updatedStats);
 
     // Add winnings
     const totalAmount = entryAmount + result.winnings;
@@ -189,91 +224,39 @@ export default function TRAXMode({ traxBalance, onBalanceChange }: TRAXModeProps
           )}
         </div>
 
-        {/* Race Result Panel - Hidden */}
-        <div className="hidden">
-            <div className="space-y-4">
-              {/* Result Badge */}
-              <div className="text-center">
-                {raceResult.position === 1 && (
-                  <>
-                    <div className="text-6xl mb-2">🏆</div>
-                    <p className="text-3xl font-bold text-yellow-400">1st Place!</p>
-                  </>
-                )}
-                {raceResult.position === 2 && (
-                  <>
-                    <div className="text-6xl mb-2">🥈</div>
-                    <p className="text-2xl font-bold text-gray-300">2nd Place</p>
-                  </>
-                )}
-                {raceResult.position === 3 && (
-                  <>
-                    <div className="text-6xl mb-2">🥉</div>
-                    <p className="text-2xl font-bold text-amber-600">3rd Place</p>
-                  </>
-                )}
-                {raceResult.position >= 4 && (
-                  <>
-                    <div className="text-5xl mb-2">😅</div>
-                    <p className="text-xl font-bold text-roach-300">
-                      {raceResult.position === 4 ? "4th Place" : "5th Place"}
-                    </p>
-                  </>
-                )}
-              </div>
 
-              {/* Payout Summary */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-roach-700 rounded-lg p-3 text-center">
-                  <p className="text-roach-300 text-xs">Entry Fee</p>
-                  <p className="text-xl font-bold text-red-400">-{entryAmount}</p>
-                </div>
-                <div className="bg-roach-700 rounded-lg p-3 text-center">
-                  <p className="text-roach-300 text-xs">Payout</p>
-                  <p className="text-xl font-bold text-green-400">
-                    +{raceResult.winnings}
-                  </p>
-                </div>
-              </div>
-
-              {/* Net Result */}
-              <div className={`rounded-lg p-4 text-center ${
-                raceResult.winnings > entryAmount
-                  ? "bg-green-900"
-                  : raceResult.winnings === entryAmount
-                  ? "bg-blue-900"
-                  : "bg-red-900"
-              }`}>
-                <p className="text-roach-300 text-sm">Net Result</p>
-                <p className={`text-2xl font-bold ${
-                  raceResult.winnings > entryAmount
-                    ? "text-green-400"
-                    : raceResult.winnings === entryAmount
-                    ? "text-blue-400"
-                    : "text-red-400"
-                }`}>
-                  {raceResult.winnings > entryAmount
-                    ? `+${raceResult.winnings - entryAmount}`
-                    : raceResult.winnings === entryAmount
-                    ? "Break Even"
-                    : `-${entryAmount - raceResult.winnings}`}
-                </p>
-              </div>
-
-              <button
-                onClick={handleNewRoach}
-                className="w-full px-4 py-2 bg-roach-700 hover:bg-roach-600 text-white rounded-lg font-semibold transition-all"
-              >
-                🔄 Next Race
-              </button>
-            </div>
-          ) : (
-            <div className="text-center py-8 text-roach-300">
-              <p>Roll a roach and race to see results here</p>
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Race Result Notification */}
+      {raceResult && (
+        <div className="bg-roach-800 rounded-xl p-6 border border-roach-700 mb-6">
+          <h3 className="text-xl font-bold text-yellow-400 mb-4">Race Result</h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="text-center">
+              {raceResult.position === 1 && <div className="text-4xl mb-2">🏆</div>}
+              {raceResult.position === 2 && <div className="text-4xl mb-2">🥈</div>}
+              {raceResult.position === 3 && <div className="text-4xl mb-2">🥉</div>}
+              {raceResult.position >= 4 && <div className="text-4xl mb-2">😅</div>}
+              <p className="text-roach-300">Position</p>
+              <p className="text-2xl font-bold text-white">{raceResult.position}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl mb-2">💰</p>
+              <p className="text-roach-300">Winnings</p>
+              <p className={`text-2xl font-bold ${
+                raceResult.winnings > entryAmount ? "text-green-400" : "text-red-400"
+              }`}>
+                {raceResult.winnings > entryAmount ? "+" : ""}{raceResult.winnings - entryAmount}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl mb-2">📊</p>
+              <p className="text-roach-300">Win Rate</p>
+              <p className="text-2xl font-bold text-purple-400">{stats.winRate.toFixed(1)}%</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats Panel */}
       <div className="bg-roach-800 rounded-xl p-6 border border-roach-700">

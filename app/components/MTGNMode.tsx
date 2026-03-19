@@ -1,7 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { rollRoach, simulateRace, type RoachStats, type GameResult } from "@/app/lib/gameLogic";
+import { recordRaceResult, loadStats, type PlayerStats } from "@/app/lib/statsManager";
+
+const DEFAULT_STATS: PlayerStats = {
+  totalRaces: 0,
+  totalWins: 0,
+  totalLosses: 0,
+  winRate: 0,
+  favoriteRoachSpeed: 5,
+  favoriteRoachAgility: 5,
+  favoriteRoachStamina: 5,
+  totalEarnings: 0,
+  lastRaceTime: 0,
+  itemsPurchased: 0,
+};
 
 export default function MTGNMode() {
   const [roachStats, setRoachStats] = useState<RoachStats | null>(null);
@@ -9,10 +23,18 @@ export default function MTGNMode() {
   const [isRacing, setIsRacing] = useState(false);
   const [totalWinnings, setTotalWinnings] = useState(12);
   const [raceCount, setRaceCount] = useState(15);
+  const [stats, setStats] = useState<PlayerStats>(DEFAULT_STATS);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setStats(loadStats());
+    }
+  }, []);
 
   // Roll a new roach
   const handleNewRoach = () => {
     const newStats = rollRoach();
+    // Normalize from 0-100 to 1-10 scale for display
     setRoachStats(newStats);
     setRaceResult(null);
   };
@@ -28,6 +50,21 @@ export default function MTGNMode() {
     
     const result = simulateRace(roachStats);
     setRaceResult(result);
+    
+    // Track the race in stats
+    const normalizedSpeed = Math.round((result.stats.speed / 100) * 10);
+    const normalizedAgility = Math.round((result.stats.agility / 100) * 10);
+    const normalizedStamina = Math.round((result.stats.stamina / 100) * 10);
+    
+    const updatedStats = recordRaceResult(
+      result.position,
+      result.winnings,
+      normalizedSpeed,
+      normalizedAgility,
+      normalizedStamina
+    );
+    setStats(updatedStats);
+    
     setTotalWinnings(totalWinnings + result.winnings);
     setRaceCount(raceCount + 1);
     
@@ -198,19 +235,21 @@ export default function MTGNMode() {
         <div className="grid md:grid-cols-4 gap-4">
           <div className="bg-roach-700 rounded-lg p-4 text-center">
             <p className="text-roach-300 text-sm">Total Races</p>
-            <p className="text-3xl font-bold text-blue-400">{raceCount}</p>
+            <p className="text-3xl font-bold text-blue-400">{stats.totalRaces}</p>
           </div>
           <div className="bg-roach-700 rounded-lg p-4 text-center">
             <p className="text-roach-300 text-sm">Total Winnings</p>
-            <p className="text-3xl font-bold text-green-400">{totalWinnings}</p>
+            <p className="text-3xl font-bold text-green-400">${stats.totalEarnings.toFixed(0)}</p>
           </div>
           <div className="bg-roach-700 rounded-lg p-4 text-center">
             <p className="text-roach-300 text-sm">Avg Payout</p>
-            <p className="text-3xl font-bold text-yellow-400">5</p>
+            <p className="text-3xl font-bold text-yellow-400">
+              ${stats.totalRaces > 0 ? (stats.totalEarnings / stats.totalRaces).toFixed(1) : "0"}
+            </p>
           </div>
           <div className="bg-roach-700 rounded-lg p-4 text-center">
             <p className="text-roach-300 text-sm">Win Rate</p>
-            <p className="text-3xl font-bold text-purple-400">80%</p>
+            <p className="text-3xl font-bold text-purple-400">{stats.winRate.toFixed(1)}%</p>
           </div>
         </div>
       </div>

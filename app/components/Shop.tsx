@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getDefaultShopItems } from "@/app/lib/gameLogic";
+import { recordItemPurchase } from "@/app/lib/statsManager";
 
 type ShopProps = {
   traxBalance: number;
@@ -19,6 +20,7 @@ export default function Shop({ traxBalance, onClose, onPurchase }: ShopProps) {
   const handlePurchase = (_itemId: number, price: number) => {
     if (traxBalance >= price) {
       onPurchase(price);
+      recordItemPurchase(); // Track the purchase for achievements
       alert("✅ Item purchased!");
     } else {
       alert("❌ Insufficient $TRAX");

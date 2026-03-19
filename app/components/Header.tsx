@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { LoginButton } from "./LoginButton";
 
 type HeaderProps = {
   gameMode?: "mtgn" | "trax" | "arcade";
@@ -14,6 +15,9 @@ export default function Header({
   usdcBalance,
   onShopClick,
 }: HeaderProps) {
+  // For now, assume not connected until AGW is fully integrated
+  const isConnected = false;;
+
   return (
     <header className="max-w-6xl mx-auto mb-8 bg-roach-800 rounded-xl p-6 shadow-2xl border border-roach-700">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -38,31 +42,41 @@ export default function Header({
           </div>
         </div>
 
-        {/* Balance Info */}
-        <div className="flex gap-6 items-center">
-          <div className="text-center">
-            <p className="text-roach-300 text-sm">$TRAX Balance</p>
-            <p className="text-2xl font-bold text-green-400">
-              {traxBalance.toFixed(2)}
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-roach-300 text-sm">$USDC Balance</p>
-            <p className="text-2xl font-bold text-blue-400">
-              {usdcBalance.toFixed(2)}
-            </p>
-          </div>
+        {/* Balance Info & Auth */}
+        <div className="flex gap-6 items-center flex-wrap">
+          {isConnected && (
+            <>
+              <div className="text-center">
+                <p className="text-roach-300 text-sm">$TRAX Balance</p>
+                <p className="text-2xl font-bold text-green-400">
+                  {traxBalance.toFixed(2)}
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-roach-300 text-sm">$USDC Balance</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {usdcBalance.toFixed(2)}
+                </p>
+              </div>
+            </>
+          )}
 
           {/* Action Buttons */}
           <button
             onClick={onShopClick}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold transition-all"
+            disabled={!isConnected}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-600 disabled:opacity-50 text-white rounded-lg font-semibold transition-all"
           >
             🛍️ Shop
           </button>
-          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all">
-            👛 Wallet
-          </button>
+          
+          {isConnected ? (
+            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-semibold transition-all">
+              👛 Wallet
+            </button>
+          ) : (
+            <LoginButton />
+          )}
         </div>
       </div>
     </header>
