@@ -37,7 +37,7 @@ export default function Header({
               Roach Racing Club
             </h1>
             <p className="text-sm text-roach-300">
-              Cody's Roach Racing Club Tool
+              Play on Abstract, built by Cody
             </p>
           </div>
         </div>

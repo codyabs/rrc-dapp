@@ -51,8 +51,8 @@ export default function Home() {
         <div className="flex gap-3 flex-wrap justify-center">
           {[
             { id: "mtgn", label: "🔥 MTGN Mode", desc: "" },
-            { id: "trax", label: "💰 TRAX Mode", desc: "Play with tokens" },
-            { id: "arcade", label: "🎮 Arcade Mode", desc: "Coming soon" },
+            { id: "trax", label: "💰 TRAX Mode", desc: "" },
+            { id: "arcade", label: "🎮 Arcade Mode", desc: "" },
           ].map((mode) => (
             <button
               key={mode.id}
