@@ -7,6 +7,9 @@ import ArcadeMode from "./components/ArcadeMode";
 import Header from "./components/Header";
 import Shop from "./components/Shop";
 import { OnboardingModal } from "./components/OnboardingModal";
+import { Leaderboard } from "./components/Leaderboard";
+import { StatsPanel } from "./components/StatsPanel";
+import { AchievementBadges } from "./components/AchievementBadges";
 
 type GameMode = "mtgn" | "trax" | "arcade";
 
@@ -34,14 +37,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen p-4 md:p-8">
-      {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
-
       <Header
         gameMode={gameMode}
         traxBalance={traxBalance}
         usdcBalance={usdcBalance}
         onShopClick={() => setShowShop(!showShop)}
       />
+
+      {showOnboarding && <OnboardingModal onClose={handleOnboardingClose} />}
 
       {/* Game Mode Selector */}
       <div className="max-w-6xl mx-auto mb-8">
@@ -86,6 +89,27 @@ export default function Home() {
           />
         )}
         {gameMode === "arcade" && <ArcadeMode />}
+      </div>
+
+      {/* Stats & Leaderboard Section */}
+      <div className="max-w-6xl mx-auto mt-12 space-y-8">
+        {/* Stats Panel */}
+        <div>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">📊 Your Stats</h2>
+          <StatsPanel />
+        </div>
+
+        {/* Achievements */}
+        <div>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">🏆 Achievements</h2>
+          <AchievementBadges />
+        </div>
+
+        {/* Leaderboard */}
+        <div>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">🏅 Leaderboard</h2>
+          <Leaderboard />
+        </div>
       </div>
     </main>
   );
