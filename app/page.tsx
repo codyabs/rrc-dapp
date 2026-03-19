@@ -36,7 +36,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-4 md:p-8 bg-slate-950">
+    <main className="min-h-screen p-4 md:p-8">
       <Header
         gameMode={gameMode}
         traxBalance={traxBalance}
@@ -59,8 +59,8 @@ export default function Home() {
               onClick={() => setGameMode(mode.id as GameMode)}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 gameMode === mode.id
-                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105"
-                  : "bg-slate-700 text-slate-200 hover:bg-slate-600 border border-slate-600"
+                  ? "bg-yellow-600 text-white shadow-lg scale-105"
+                  : "bg-roach-700 text-roach-50 hover:bg-roach-600"
               }`}
             >
               <div>{mode.label}</div>
@@ -95,25 +95,19 @@ export default function Home() {
       <div className="max-w-6xl mx-auto mt-12 space-y-8">
         {/* Stats Panel */}
         <div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-6">
-            📊 Your Stats
-          </h2>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">📊 Your Stats</h2>
           <StatsPanel />
         </div>
 
         {/* Achievements */}
         <div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
-            🏆 Achievements
-          </h2>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">🏆 Achievements</h2>
           <AchievementBadges />
         </div>
 
         {/* Leaderboard */}
         <div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-6">
-            🏅 Leaderboard
-          </h2>
+          <h2 className="text-3xl font-bold text-yellow-400 mb-6">🏅 Leaderboard</h2>
           <Leaderboard />
         </div>
       </div>
